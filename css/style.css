@@ -1,0 +1,25 @@
+.sample {
+    width: 450px;
+    margin: 0px auto;
+}
+
+.warn {
+    width: 20px;
+    height: 20px;
+    margin-bottom: 10px;
+    background-color: rgba(240, 17, 17, 0.664);
+    display: block;
+    border-radius: 5px;
+}
+.success {
+    width: 20px;
+    height: 20px;
+    margin-bottom: 10px;
+    background-color: rgba(17, 88, 240, 0.664);
+    display: block;
+    border-radius: 5px;
+}
+
+.progress {
+    margin-top: 30px;
+}

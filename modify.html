@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css//bootstrap.min.css">
+    <link rel="stylesheet" href="css/font-awesome.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <title>Homework</title>
+</head>
+
+
+<body>
+    <div id="app"> 
+        <div class="sample">
+            <form v-if="editMode" @submit.prevent="hadleForm">
+                <div class="progress">
+					<div class="progress-bar" :style="{width: progressBar + '%'}"></div>
+				</div>
+				<div>
+                    
+					<div class="form-group" v-for="(input, index) of inputsElem">
+	                    <label>{{input.title}}</label>
+                        <span :class="{success: input.validate === true, warn: input.validate === false}">
+                            
+                        </span>
+	                    <input type="text" 
+                               class="form-control"
+                               v-model="input.value"
+                               @input="validateInput(index)"
+                        >
+	                </div>
+				</div>
+				<button class="btn btn-primary" :disabled="isProgressEnd">
+					Send Data
+                </button>
+            </form>
+            <table v-else class="table table-bordered">
+                <tr v-for="input of inputsElem">
+                    <td>{{input.title}}</td>
+                    <td>{{input.value}}</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    
+
+        
+        
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.11"></script>
+    <script>
+        new Vue({
+            el: '#app',
+            data: {
+                inputsElem: [
+                    {title: 'Name', pattern: /^[a-zA-Z ]{2,30}$/, value: '', validate: null},
+                    {title: 'Phone', pattern: /^[0-9]{7,14}$/, value: '', validate: null},   
+                    {title: 'Email', pattern: /.+/, value: '', validate: null},   
+                    {title: 'Some Field 1', pattern: /.+/, value: '', validate: null},   
+                    {title: 'Some Field 2', pattern: /.+/, value: '', validate: null},   
+                ],
+                progressBar: 0,
+                editMode: true
+            },
+            methods: {
+                validateInput(index) {
+                    let input = this.inputsElem[index];
+                    if (input.validate) {
+                        if (input.pattern.test(input.value)) this.inputsElem[index].validate = true;
+                        else {
+                            this.inputsElem[index].validate = false;    
+                            this.progressBar -= this.getProgressWidth();
+                        }
+                    } else {
+                        if (input.pattern.test(input.value)) {
+                            this.inputsElem[index].validate = true;
+                            this.progressBar += this.getProgressWidth();
+                        }
+                        else this.inputsElem[index].validate = false;
+                    }
+                },
+                getProgressWidth() {
+                    return 100 / this.inputsElem.length;
+                },
+                hadleForm() {
+                    this.editMode = false;
+                }
+                
+            },
+            computed: {
+                isProgressEnd() {
+                    return this.progressBar < 100;
+                }
+            }
+        });
+    </script>
+
+    
+    <script src="script.js"></script>
+</body>
+</html>
